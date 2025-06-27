@@ -136,7 +136,7 @@ namespace D2DTM
         const Mat3x2& GetWorldMatrix()
         {
             if (m_dirty) UpdateMatrices();
-          
+
             return m_matrixWorld;
         }
 

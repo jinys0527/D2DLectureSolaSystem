@@ -74,7 +74,7 @@ void TestMainApp::Render()
     m_Renderer->RenderBegin();
 
     static int frameIndex = 0;
-    static int timer = 0;
+    static float duration = 0.f;
 	D2D1_RECT_F frameRect = D2D1::RectF(
 		static_cast<float>(m_spriteData.m_frames[frameIndex].m_frame.m_x),
 		static_cast<float>(m_spriteData.m_frames[frameIndex].m_frame.m_y),
@@ -87,12 +87,12 @@ void TestMainApp::Render()
 	);
 
 	m_Renderer->DrawBitmap(m_spriteData.m_image.Get(), renderRect, frameRect);
+    duration += m_GameTimer->DeltaTimeMS();
 
-    timer++;
-    if (timer >= 10)
+    if (m_spriteData.m_frames[frameIndex].m_duration <= duration)
     {
         frameIndex = (frameIndex + 1) % m_spriteData.m_frames.size();
-        timer = 0;
+        duration -= m_spriteData.m_frames[frameIndex].m_duration;
     }
     
 

@@ -14,13 +14,15 @@ class PlanetObject
 	void operator=(const PlanetObject&) = delete;
 
 public:
-	PlanetObject(ComPtr<ID2D1Bitmap1>& bitmap, D2D1_SIZE_F size)
+	PlanetObject(ComPtr<ID2D1Bitmap1>& bitmap)
 	{
 		m_BitmapPtr = bitmap;
 
 		m_renderTM = MYTM::MakeRenderMatrix(true);
 
-		m_rect = D2D1::RectF(0.f, 0.f, size.width, size.height);
+		D2D1_SIZE_F size = { m_rect.right - m_rect.left, m_rect.bottom - m_rect.top };
+
+		m_isSelfRotation = true;
 
 		m_transform.SetPivotPreset(D2DTM::PivotPreset::Center, size);
 	}
@@ -33,10 +35,13 @@ public:
 		{
 			m_transform.Rotate(deltaTime * 36.f);
 		}
+
 	}
 
 	void Draw(TestRenderer& testRender, D2D1::Matrix3x2F viewTM)
 	{
+		static  D2D1_RECT_F s_rect = D2D1::RectF(0.f, 0.f, 100.f, 100.f);
+
 		D2D1::Matrix3x2F worldTM = m_transform.GetWorldMatrix();
 
 		D2D1::Matrix3x2F finalTM = m_renderTM * worldTM * viewTM;
@@ -44,9 +49,9 @@ public:
 		D2D1::ColorF boxColor = D2D1::ColorF::White;
 
 		testRender.SetTransform(finalTM);
-		testRender.DrawRectangle(m_rect.left, m_rect.top, m_rect.right, m_rect.bottom, boxColor);
+		testRender.DrawRectangle(s_rect.left, s_rect.top, s_rect.right, s_rect.bottom, boxColor);
 
-		D2D1_RECT_F dest = D2D1::RectF(m_rect.left, m_rect.top, m_rect.right, m_rect.bottom);
+		D2D1_RECT_F dest = D2D1::RectF(s_rect.left, s_rect.top, s_rect.right, s_rect.bottom);
 
 		testRender.DrawBitmap(m_BitmapPtr.Get(), dest);
 	}
@@ -64,11 +69,6 @@ public:
 	void Rotate(float angle)
 	{
 		m_transform.Rotate(angle);
-	}
-
-	void ToggleSelfRotation()
-	{
-		m_isSelfRotation = !m_isSelfRotation;
 	}
 
 	D2DTM::Transform* GetTransform()
@@ -102,6 +102,8 @@ private:
 
 	bool m_isSelfRotation = false;
 
+	float m_rotationSpeed = 0.f;
+
 	ComPtr<ID2D1Bitmap1> m_BitmapPtr;
 };
 
@@ -128,6 +130,13 @@ void TransformPracticeScene::SetUp(HWND hWnd)
 	SolarSystemRenderer::Instance().CreateBitmapFromFile(L"../Resource/sun.png", *m_SunBitmapPtr.GetAddressOf());
 	SolarSystemRenderer::Instance().CreateBitmapFromFile(L"../Resource/earth.png", *m_EarthBitmapPtr.GetAddressOf());
 	SolarSystemRenderer::Instance().CreateBitmapFromFile(L"../Resource/moon.png", *m_MoonBitmapPtr.GetAddressOf());
+	SolarSystemRenderer::Instance().CreateBitmapFromFile(L"../Resource/mercury.png", *m_MercuryBitmapPtr.GetAddressOf());
+	SolarSystemRenderer::Instance().CreateBitmapFromFile(L"../Resource/venus.png", *m_VenusBitmapPtr.GetAddressOf());
+	SolarSystemRenderer::Instance().CreateBitmapFromFile(L"../Resource/mars.png", *m_MarsBitmapPtr.GetAddressOf());
+	SolarSystemRenderer::Instance().CreateBitmapFromFile(L"../Resource/saturn.png", *m_SaturnBitmapPtr.GetAddressOf());
+	SolarSystemRenderer::Instance().CreateBitmapFromFile(L"../Resource/neptune.png", *m_NeptuneBitmapPtr.GetAddressOf());
+	SolarSystemRenderer::Instance().CreateBitmapFromFile(L"../Resource/uranus.png", *m_UranusBitmapPtr.GetAddressOf());
+	SolarSystemRenderer::Instance().CreateBitmapFromFile(L"../Resource/jupiter.png", *m_JupiterBitmapPtr.GetAddressOf());
 
 
 	MAT3X2F cameraTM = m_UnityCamera.GetViewMatrix();
@@ -135,31 +144,86 @@ void TransformPracticeScene::SetUp(HWND hWnd)
 
 	D2D1_POINT_2F worldPt = cameraTM.TransformPoint({ -50.f, -50.f });
 
-	PlanetObject* pSun = new PlanetObject(m_SunBitmapPtr, { 100.f, 100.f });
+	PlanetObject* pSun = new PlanetObject(m_SunBitmapPtr);
 
 	pSun->SetPosition(Vec2(worldPt.x, worldPt.y));
 
 	m_PlanetObjects.push_back(pSun);
 
-	worldPt = cameraTM.TransformPoint({ 150.f, 150.f });
 
-	PlanetObject* pEarth = new PlanetObject(m_EarthBitmapPtr, { 75.f, 75.f });
+	PlanetObject* pMercury = new PlanetObject(m_MercuryBitmapPtr);
 
-	pEarth->SetPosition(Vec2(worldPt.x, worldPt.y));
+	pMercury->SetParent(pSun);
+	pMercury->SetPosition(Vec2(69.28f, 40.f));
+	pMercury->GetTransform()->SetScale(Vec2(0.25f, 0.25f));
+	m_PlanetObjects.push_back(pMercury);
 
-	pEarth->SetParent(pSun);
 
+	PlanetObject* pVenus = new PlanetObject(m_VenusBitmapPtr);
+
+	pVenus->SetParent(pSun);
+	pVenus->SetPosition(Vec2(-122.10f, -44.49f));
+	pVenus->GetTransform()->SetScale(Vec2(0.4f, 0.4f));
+
+	m_PlanetObjects.push_back(pVenus);
+
+
+	PlanetObject* pEarth = new PlanetObject(m_EarthBitmapPtr);
+
+	pEarth->SetParent(pSun); 
+	pEarth->SetPosition(Vec2(-76.35f, 161.30f));
+	pEarth->GetTransform()->SetScale(Vec2(0.4f, 0.4f));
 	m_PlanetObjects.push_back(pEarth);
 
-	worldPt = cameraTM.TransformPoint({ 250.f, 250.f });
 
-	PlanetObject* pMoon = new PlanetObject(m_MoonBitmapPtr, { 30.f, 30.f });
-
-	pMoon->SetPosition(Vec2(worldPt.x, worldPt.y));
+	PlanetObject* pMoon = new PlanetObject(m_MoonBitmapPtr);
 
 	pMoon->SetParent(pEarth);
-
+	pMoon->SetPosition(Vec2(-40.26, -48.53f));
+	pMoon->GetTransform()->SetScale(Vec2(0.25f, 0.25f));
 	m_PlanetObjects.push_back(pMoon);
+
+
+	PlanetObject* pMars = new PlanetObject(m_MarsBitmapPtr);
+
+	pMars->SetParent(pSun);
+	pMars->SetPosition(Vec2(177.22f, -147.72f));
+	pMars->GetTransform()->SetScale(Vec2(0.35f, 0.35f));
+	m_PlanetObjects.push_back(pMars);
+
+
+	PlanetObject* pJupiter = new PlanetObject(m_JupiterBitmapPtr);
+
+	pJupiter->SetParent(pSun);
+	pJupiter->SetPosition(Vec2(197.99f, 197.99f));
+	pJupiter->GetTransform()->SetScale(Vec2(0.60f, 0.60f));
+	m_PlanetObjects.push_back(pJupiter);
+
+
+	PlanetObject* pSaturn = new PlanetObject(m_SaturnBitmapPtr);
+
+	pSaturn->SetParent(pSun);
+	pSaturn->SetPosition(Vec2(-310.22f, 113.08f));
+	pSaturn->GetTransform()->SetScale(Vec2(0.55f, 0.55f));
+	m_PlanetObjects.push_back(pSaturn);
+
+
+	PlanetObject* pUranus = new PlanetObject(m_UranusBitmapPtr);
+
+	pUranus->SetParent(pSun);
+	pUranus->SetPosition(Vec2(123.68f, -338.27f));
+	pUranus->GetTransform()->SetScale(Vec2(0.3f, 0.3f));
+	m_PlanetObjects.push_back(pUranus);
+
+
+	PlanetObject* pNeptune = new PlanetObject(m_NeptuneBitmapPtr);
+
+	pNeptune->SetParent(pSun);
+	pNeptune->SetPosition(Vec2(393.92f, 69.36f));
+	pNeptune->GetTransform()->SetScale(Vec2(0.3f, 0.3f));
+	m_PlanetObjects.push_back(pNeptune);
+
+
 
 
 	RECT rc;
@@ -211,11 +275,6 @@ void TransformPracticeScene::OnResize(int width, int height)
 
 void TransformPracticeScene::ProcessKeyboardEvents()
 {
-	if (InputManager::Instance().GetKeyPressed(VK_F2))
-	{
-		SetPlanetSelfRotation();
-	}
-
 	static const std::vector<std::pair<int, Vec2>> kCameraMoves = {
 		{VK_RIGHT, {  1.f,  0.f } },
 		{VK_LEFT,  { -1.f,  0.f } },
@@ -246,12 +305,3 @@ void TransformPracticeScene::ProcessKeyboardEvents()
 		}
 	}
 }
-
-void TransformPracticeScene::SetPlanetSelfRotation()
-{
-	for (auto& planet : m_PlanetObjects)
-	{
-		planet->ToggleSelfRotation();
-	}
-}
-
