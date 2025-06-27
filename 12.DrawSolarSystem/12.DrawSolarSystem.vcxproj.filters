@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="테스트씬">
+      <UniqueIdentifier>{1bbfa152-82e7-4094-a096-f6c65846f2fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="카메라">
+      <UniqueIdentifier>{7b68e1d1-1a42-4cfb-b0b6-2fd16659919c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="프리컴파일">
+      <UniqueIdentifier>{efde11c8-280c-4c91-9a71-cec6139477b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="트랜스폼">
+      <UniqueIdentifier>{a4d83de1-4718-4fa1-9906-3ab92d4a49e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="렌더">
+      <UniqueIdentifier>{20c5329f-7fb8-444f-941a-8c442ed1ae35}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="게임오브젝트">
+      <UniqueIdentifier>{a81b259d-9210-4625-b7e4-18419068a60d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="과제">
+      <UniqueIdentifier>{d5296e0c-670d-45c4-984f-6172c6b289f5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Camera2D.h">
+      <Filter>카메라</Filter>
+    </ClInclude>
+    <ClInclude Include="DefaultScene.h">
+      <Filter>테스트씬</Filter>
+    </ClInclude>
+    <ClInclude Include="OnlyForTestScene.h">
+      <Filter>테스트씬</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>프리컴파일</Filter>
+    </ClInclude>
+    <ClInclude Include="D2DTransform.h">
+      <Filter>트랜스폼</Filter>
+    </ClInclude>
+    <ClInclude Include="TMHelper.h">
+      <Filter>트랜스폼</Filter>
+    </ClInclude>
+    <ClInclude Include="D2DRender.h">
+      <Filter>렌더</Filter>
+    </ClInclude>
+    <ClInclude Include="SolarSystemRenderer.h">
+      <Filter>렌더</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>게임오브젝트</Filter>
+    </ClInclude>
+    <ClInclude Include="HierarchicalTransformTestScene.h">
+      <Filter>테스트씬</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="MainApp.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformPracticeScene.h">
+      <Filter>과제</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="MainApp.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera2D.cpp">
+      <Filter>카메라</Filter>
+    </ClCompile>
+    <ClCompile Include="OnlyForTestScene.cpp">
+      <Filter>테스트씬</Filter>
+    </ClCompile>
+    <ClCompile Include="DefaultScene.cpp">
+      <Filter>테스트씬</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>프리컴파일</Filter>
+    </ClCompile>
+    <ClCompile Include="D2DTransform.cpp">
+      <Filter>트랜스폼</Filter>
+    </ClCompile>
+    <ClCompile Include="TMHelper.cpp">
+      <Filter>트랜스폼</Filter>
+    </ClCompile>
+    <ClCompile Include="D2DRenderer.cpp">
+      <Filter>렌더</Filter>
+    </ClCompile>
+    <ClCompile Include="SolarSystemRenderer.cpp">
+      <Filter>렌더</Filter>
+    </ClCompile>
+    <ClCompile Include="HierarchicalTransformTestScene.cpp">
+      <Filter>테스트씬</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformPracticeScene.cpp">
+      <Filter>과제</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
